@@ -1,5 +1,5 @@
 <template>
-    <div class="shop">
+    <div class="shop" id="container">
         <div class="blur-bg" v-if="blurLoad"></div>
         <div class="loader-10 loader" v-if="loader"></div>
          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -38,7 +38,7 @@
          </nav>
          <div class="body-bg">
              <div class="container">
-                 <div class="col-12 col-md-10">
+                 <div class="col-12 col-md-10 push-down">
                      <div class="welcome-text">Welcome to Neighbourhood Market</div>
                      <div class="welcome-description">Here you can buy, sell or rent anything you wish to.<div>Get your immediate and dire needs met, sell an item or property to people you can easily get in touch with.</div></div>
                  </div>
@@ -81,7 +81,8 @@
                                 <div class="col-8 price"><img src="../assets/icons/material icons/naira.svg">{{ product.price }}.00</div>
                                 <div class="col-4 text-right sale-type">{{ product.saleType }}</div>
                                 <div class="col-sm-9 negotiable" v-if="product.negotiable" >Negotiable</div>
-                                <div class="col-sm-9 negotiable" v-else>Non-Negotiable</div>
+                                <div class="col-sm-
+                                9 negotiable" v-else>Non-Negotiable</div>
                                  <!-- <div class="col-sm-3 goal" id="favIcon"><div class="goal"><img src="../assets/icons/png/star folder/star.png" @click="favourite" id="imgFav" width="20px"></div></div> -->
                             </div>
                            
@@ -92,7 +93,7 @@
             </div>
         </div>
 
-        <div class="footer-pane bg-dark text-white">
+        <!-- <div class="footer-pane bg-dark text-white">
                             <div class="container">
                                 <div class="row">
                                     <div class="align-self-center col-12 col-md-4">
@@ -112,7 +113,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
 
 
@@ -249,11 +250,39 @@ export default {
                     }
                 })
             })
+    },
+    updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
     }
 }
 </script>
 
 <style scoped>
+    .shop {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh;
+    }
+
+    .background {
+       background-color: rgba(224, 227, 231, 0.541);
+       height: 100%;
+    }
+
+    nav {
+        z-index: 10;
+        position: absolute;
+        width: 100%;
+    }
+
+    .push-down {
+        margin-top: 60px;
+    }
+
     .btn-product {
         border-radius: 500px;
         font-size: 0.8em;
@@ -284,9 +313,7 @@ export default {
         font-size: 2.5em;
         margin-bottom: 10px;
     }
-    .shop {
-        background-color: rgb(228, 228, 228);
-    }
+
     .goal{
         border: 2px solid red;
     }

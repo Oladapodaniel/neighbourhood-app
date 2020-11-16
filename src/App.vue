@@ -55,12 +55,12 @@ export default {
 
 <style>
 /* @import '../css/styles.css'; */
-body { 
+/* body, html { 
   background: rgba(224, 227, 231, 0.541); 
-/* height: 100%; 
+height: 100%; 
 overflow-x: hidden;
- position: relative;  */
- }
+ position: relative; 
+ } */
 #app {
   font-family: 'Poppins Regular','Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

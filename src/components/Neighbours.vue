@@ -1,5 +1,5 @@
 <template>
-    <div class="neighbours">
+    <div class="neighbours" id="container">
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
@@ -40,7 +40,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-sm-12">
+                <div class="col-sm-12 mt-5">
                     <!-- <div class="card"> -->
                         <div class="col-12 text-center display-4 pt-5">
                             Meet Your Neighbours
@@ -134,13 +134,33 @@ export default {
         //             })
         //     })
         // })
+   
+    },
+    updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
     }
 }
 </script>
 
 <style scoped>
     .neighbours {
-        /* background-color: rgba(224, 227, 231, 0.541); */
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh;
+    }
+
+    .background {
+       background-color: rgba(224, 227, 231, 0.541);
+       height: 100%;
+    }
+    nav {
+        z-index: 10;
+        position: absolute;
+        width: 100%;
     }
 
     .image {

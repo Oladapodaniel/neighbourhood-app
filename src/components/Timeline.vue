@@ -1,5 +1,5 @@
 <template>
-    <div class="timeline">
+    <div class="timeline" id="timeline">
         <div class="blur-bg" v-if="blurLoad"></div>
         <div class="loader-10 loader" v-if="loader"></div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,7 +47,7 @@
         <div class="first-pane">
         <div class="container">
             <div class="row">
-                <div class="col-sm-12 mt-3 text-center">
+                <div class="col-sm-12 push-down text-center">
                     <div class="welcome-text">Welcome {{ profile.name }}</div>
                     <div>Meet and connect with your neighbours here</div>
                     <!-- <div>Here are updates in {{ profile.address.split(' ')[3] }}</div> -->
@@ -229,7 +229,8 @@ export default {
                 name: this.profile.name,
                 time: new Date().toLocaleTimeString(),
                 text: this.text,
-                imageKey: this.profile.imageKey
+                imageKey: this.profile.imageKey,
+                timestamp: new Date().getTime()/1000
             }
 
 // iF chat.name is equal to one of the neighbours passed in, send the message
@@ -244,7 +245,7 @@ export default {
 
            this.text = null
 
-           console.log(this.neighbours)
+    
         // if youre not prt of this neighbourrs youcant send chat here
   
         //    var data = [{ transportnumber: '45', time: '10:28:00', date:"2017-01-16"}, { transportnumber: '45', time: '10:38:00', date:"2017-01-16" },{ transportnumber: '45', time: '10:48:00', date:"2017-01-16" }, { transportnumber: '14', time: '10:12:00', date:"2017-01-16" }, { transportnumber: '14', time: '10:24:00', date:"2017-01-16" }, { transportnumber: '14', time: '10:52:00', date:"2017-01-16"}];
@@ -337,19 +338,27 @@ console.log(this.textArr)
                         text: doc.data().text,
                         imageKey: doc.data().imageKey,
                         id: doc.id,
+                        timestamp: doc.data().timestamp
+                        
                         // like: doc.data().like
                     })
                 })
                 // Rearrange how its display from bottom to top by sorting by time
                 this.textArr.sort(function (a, b) {
-                return b.time.localeCompare(a.time);
+                // return b.timestamp.localeCompare(a.timestamp);
+                return b.timestamp - a.timestamp
             })
 
         })
-
-        
-
      
+    },
+    updated () {
+        let container = document.querySelector('#timeline')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
     }
 }
 </script>
@@ -364,7 +373,23 @@ console.log(this.textArr)
     } */
     
     .timeline {
-        /* background-color: rgba(224, 227, 231, 0.541); */
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh;
+    }
+
+    .background {
+       background-color: rgba(224, 227, 231, 0.541);
+       height: 100%;
+    }
+
+    nav {
+        z-index: 10;
+        position: absolute;
+        width: 100%;
+    }
+
+    .push-down {
+        margin-top: 80px;
     }
 
     /* nav ul li {

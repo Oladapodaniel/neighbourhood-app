@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div class="profile" id="container">
         
          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
@@ -41,10 +41,10 @@
 
         <div class="container-fluid first-pane">
             <div class="row">
-                <div class="display-picture col-10 offset-1 col-sm-5">
+                <div class="display-picture push-down col-10 offset-1 col-sm-5">
                     <img :src="profile.imageKey" class="dp">
                 </div>
-                <div class="col-sm-6 bg-profile">
+                <div class="col-sm-6 push-down bg-profile">
                     <div class="name">{{ profile.name }}</div>
                     <div class="email">{{ profile.email }}</div>
                     <div class="phoneNumber">{{ profile.phoneNumber }}</div>
@@ -54,8 +54,7 @@
                 </div>
             </div>
         </div>
-        <h1>{{ myName }}</h1>
-        <div class="footer-pane bg-dark text-white">
+        <!-- <div class="footer-pane bg-dark text-white">
             <div class="container">
                 <div class="row">
                     <div class="align-self-center col-12 col-md-4">
@@ -75,7 +74,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <!-- <div>{{ imageKey1 }}</div> -->
+        <div><img :src="imageKey1"></div>
+        <input type="file" @change="image">
     </div>
 </template>
 
@@ -87,7 +89,7 @@ export default {
         name: 'profile'
         return {
             profile: null,
-            myName: null
+            imageKey1: null
         }
     },
     created () {
@@ -102,7 +104,6 @@ export default {
                     }
                 })
             })
-            this.myName = 'Oladapo Daniel'
 
             // console.log(this.userId)
     },
@@ -116,11 +117,48 @@ export default {
     //    } else {
     //        console.log('doesnot exist')
     //    }  
+    },
+    updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
+    },
+    methods: {
+        image (e) {
+            console.log(e.target.files[0])
+            let reader = new FileReader()
+            reader.readAsDataURL(e.target.files[0])
+            reader.onload = (e) => {
+                this.imageKey1 = e.target.result
+            }
+        }
     }
 }
 </script>
 
 <style scoped>
+    .profile {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh;
+    }
+
+    .background {
+       background-color: rgba(224, 227, 231, 0.541);
+       height: 100%;
+    }
+
+    nav {
+        z-index: 10;
+        position: absolute;
+        width: 100%;
+    }
+
+    .push-down {
+        margin-top: 80px;
+    }
 
     .display-picture {
         width: 100%;

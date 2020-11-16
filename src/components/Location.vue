@@ -1,5 +1,5 @@
 <template>
-  <div class="nearbyPlaces">
+  <div class="nearbyPlaces" id="container">
     
   
     <!-- <div id="map"></div>
@@ -67,12 +67,12 @@
          </nav>
       <div class="body-bg">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-6 offset-sm-6 text-right mt-3">
+        <div class="row margin-adjust">
+          <div class="col-sm-6 offset-sm-6 text-right push-down">
             <div><img src="../assets/icons/svg/placeholder-4.svg"></div>
             <div v-address class="grey-text">{{ address }}</div>
           </div>
-          <div class="col-12 offset-1 offset-sm-0 mt-1 grey-text">Let's see what's &nbsp;&nbsp; <span class="display-4 nearby">nearby</span></div>
+          <div class="col-12 offset-1 offset-sm-0 mt-1 grey-text">Let's see what's <span class="display-4 nearby col-12">nearby</span></div>
           <!-- <div class="col-sm-12 text-center">Let us know where you are</div> -->
           <!-- <div class="col-sm-12 btn btn-dark">Get Location</div> -->
           <!-- <div class="col-sm-12">{{ address }}</div> -->
@@ -81,7 +81,7 @@
   </div>
   <div class="container">
     <div class="row">
-          <div class="card col-10 offset-1 offset-sm-0 col-sm-5 col-lg-4 mt-4 p-4">
+          <div class="card col-10 offset-1 offset-sm-0 col-sm-5 card-adjust col-lg-4 p-4">
             <form>
               <div class="form-row">
                 <div class="search-header col-sm-12 mb-3">Search Nearby Places</div>
@@ -146,7 +146,7 @@
               <div class="btn mt-3 col-sm-12 col-md-8" @click="findNearbyButtonPressed">Search Nearby</div>
             </form>
           </div>
-          <div class="card col-10 offset-1 col-sm-5 offset-sm-2 col-lg-4 offset-lg-4 mt-4 p-4">
+          <div class="card col-10 offset-1 col-sm-5 offset-sm-2 col-lg-4 offset-lg-4 card-adjust p-4">
             <div class="form-row mt-3">
               <div class="col-sm-12 search-header mb-3">Get Directions</div>
               <!-- <label for="yourLocation" class="col-sm-12">Your Location</label> -->
@@ -204,7 +204,7 @@
               <div class="col-sm-10 card mt-5" ref="map"></div>
             </div> -->
       </div>
-  
+<!--   
       <div class="footer-pane bg-dark text-white">
                             <div class="container">
                                 <div class="row">
@@ -225,7 +225,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
     </div>
 
 
@@ -502,6 +502,14 @@ export default {
 //   }
 // });
   },
+  updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
+  }
 
   // methods: {
     // receives a place object via the autocomplete component
@@ -538,6 +546,26 @@ export default {
         height: 400px;
         margin: 0 auto
       } */
+      .nearbyPlaces {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh;
+    }
+
+    .background {
+       background-color: rgba(224, 227, 231, 0.541);
+       height: 100%;
+    }
+
+    nav {
+        z-index: 10;
+        position: absolute;
+        width: 100%;
+    }
+
+    .push-down {
+        margin-top: 60px;
+    }
+
       .body-bg {
         background-image: linear-gradient(to bottom, rgba(15, 15, 15, 0.918) 0%,rgba(168, 168, 168, 0.52) 140%), url('../assets/location-bg.jpg');
         height: 40vh;
@@ -545,8 +573,13 @@ export default {
         /* background-repeat: no-repeat; */
         background-size: 150mm; 
       }
-      .nearbyPlaces {
+      /* .nearbyPlaces {
         background-color: rgb(228, 228, 228);
+      } */
+
+      .row.margin-adjust {
+        margin-right: 25px;
+        margin-left: 10px;
       }
 
       .search-header {
@@ -557,6 +590,10 @@ export default {
         border-radius: 35px;
         background-color: rgb(197, 197, 197);
         box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
+      }
+
+      .card-adjust {
+        margin-top: 60px
       }
 
       .card {
@@ -651,5 +688,17 @@ export default {
           border: 2px solid green;
         }
       } */
+
+      @media (max-width: 449px) {
+        .card-adjust {
+          margin-top: 90px
+        }
+      }
+
+      @media (max-width: 339px) {
+        .card-adjust {
+          margin-top: 100px
+        }
+      }
 
 </style>

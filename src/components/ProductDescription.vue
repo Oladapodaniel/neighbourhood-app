@@ -1,5 +1,5 @@
 <template>
-    <div class="product-description">
+    <div class="product-description" id="container">
         <div class="blur-bg" v-if="blurLoad"></div>
         <div class="loader-10 loader" v-if="loader"></div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -7,25 +7,32 @@
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <form class="form-inline my-2 my-lg-0 ml-5">
+                      
+                      <!-- <input class="form-control search mr-sm-2" type="text" placeholder="Search your neighbours" arialabel="Search"> -->
+                      <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit" v-on:click.prevent="searchDoctor()">Search</button> -->
+                  </form>
                    <!-- <div><SearchNeighbour></SearchNeighbour></div> -->
                   <ul class="navbar-nav ml-auto text-center">
-                      <li class="nav-item mr-4 text-white">
+                      <li class="nav-item ml-4 text-white">
                           <div><img src="../assets/icons/material icons/home.svg"></div>
                         <router-link :to="{ name: 'Timeline' }" class="text-white">Timeline</router-link>   
                       </li>
-                      <li class="nav-item mr-4 text-white">
+                      <li class="nav-item ml-4 text-white">
                           <div><img src="../assets/icons/material icons/neighbour.svg"></div>
                         <router-link :to="{ name: 'Neighbours' }" class="text-white">Neighbours</router-link>   
                       </li>
-                      <li class="nav-item mr-4">
+                      <li class="nav-item ml-4">
                           <div><img src="../assets/icons/material icons/user.svg"></div>
                         <router-link  :to="{name: 'Profile'}" class="text-white">Profile</router-link>
                       </li>
-                      <li class="nav-item">
+                      <li class="nav-item ml-4">
                           <div><img src="../assets/icons/material icons/logout.svg"></div>
                         <router-link :to="{name: 'LandingPage'}" class="text-white">Logout</router-link>   
                       </li>
                   </ul>
+                  
+
              </div>
               </div>
          </nav>
@@ -36,7 +43,7 @@
                         <div class="image-p"><img class="image" :src="detail.imageKey"></div>
                         <div class="container">
                             <div class="row">
-                                <div class="col-10 offset-1">
+                                <div class="col-10 offset-1 mb-5">
                                         <div class="card">
                                             <div class="row">
                                                 <div class="col-sm-12 des-header">Product Info</div>
@@ -55,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="footer-pane bg-dark text-white">
+                        <!-- <div class="footer-pane bg-dark text-white">
                             <div class="container">
                                 <div class="row">
                                     <div class="align-self-center col-12 col-md-4">
@@ -75,7 +82,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
            
 </template>
@@ -107,22 +114,41 @@ export default {
                 })
             })
 
+    },
+    updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
     }
 }
 </script>
 
 <style scoped>
 .product-description {
-    background-color: rgb(228, 228, 228);
-}
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh
+    }
+
+    .background {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100%
+    }
 .image {
-    width: 50%;
+    width: 60%;
     position: absolute;
     top: 80px;
     /* left:27%; */
     margin: 0 auto;
     z-index: 1;
-    transform: translateX(50%)
+    transform: translateX(30%)
+}
+nav {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
 }
 
     .bg-image {
@@ -238,8 +264,8 @@ export default {
 */
      @media (min-width: 700px)  {
          .image {
-            width: 30%;
-            transform: translateX(120%);
+            width: 40%;
+            transform: translateX(70%);
          }
      } 
 

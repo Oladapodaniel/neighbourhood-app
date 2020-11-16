@@ -1,5 +1,5 @@
 <template>
-    <div class="edit-profile">
+    <div class="edit-profile" id="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
@@ -36,8 +36,8 @@
          </nav>
          
            <div class="container">
-               <div class="row">
-                   <div class="col-10 offset-1">
+               <div class="row align-content-center">
+                   <div class="col-10 offset-1 mt-5">
                        <div class="card">
                            <div class="container">
                                <form class="col-sm-10 offset-sm-1">
@@ -113,7 +113,7 @@
                </div>
            </div>
 
-           <div class="footer-pane bg-dark text-white">
+           <!-- <div class="footer-pane bg-dark text-white">
                 <div class="container">
                     <div class="row">
                         <div class="align-self-center col-12 col-md-4">
@@ -133,7 +133,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
 </template>
 
@@ -221,11 +221,35 @@ export default {
                     }
                 })
             })
+    },
+    updated () {
+        let container = document.querySelector('#container')
+        window.addEventListener('scroll', function() {
+            // console.log(window.pageYOffset + 'px', con)
+            container.classList.remove('timeline')
+            container.classList.add('background')
+            });
     }
 }
 </script>
 
 <style scoped>
+    .edit-profile {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100vh
+    }
+
+    .background {
+        background-color: rgba(224, 227, 231, 0.541);
+        height: 100%
+    }
+
+    nav {
+    z-index: 10;
+    position: absolute;
+    width: 100%;
+}
+
     .btn-dark {
         border-radius: 0;
     }
@@ -234,6 +258,8 @@ export default {
         border-radius: 0;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
     }
+
+  
 
     .footer-pane {
          /* margin-top: 30px; */
