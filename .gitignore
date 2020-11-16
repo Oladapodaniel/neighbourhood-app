@@ -10,7 +10,10 @@ config
 assets
 gmaps.js
 images
-
+.firebaserc
+firebase.json
+firestore.indexes.json
+firestore.rules
 # Editor directories and files
 .idea
 .vscode
