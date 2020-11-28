@@ -1,5 +1,7 @@
 <template>
     <div class="neighbours" id="container">
+        <div class="blur-bg" v-if="blurLoad"></div>
+        <div class="loader-10 loader" v-if="loader"></div>
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
@@ -49,7 +51,7 @@
                             <div v-for="neighbour in neighbours" :key="neighbour.userId" class="neighbourNames">
                                 <!-- <div v-if="neighbour.name !== profileame"></div> -->
                                 <div class="row">
-                                    <div class="col-2 col-sm-2 col-lg-1"><img :src="neighbour.imageKey" class="image"></div>
+                                    <div class="col-2 col-sm-2 col-lg-1"><img :src="neighbour.imageKey" class="image" width="100%"></div>
                                     <div class="col-6 offset-1 offset-sm-0">
                                         <div>{{ neighbour.name }}</div>
                                         <div class="text-small">active</div>
@@ -71,6 +73,7 @@
 <script>
 import db from '../firebase/init'
 import SearchNeighbour from './SearchNeighbour'
+import disCheck from '../distanceCheck/distanceCheck'
 export default {
     name: 'Neighbours',
     components: {
@@ -79,7 +82,9 @@ export default {
     data () {
         return {
             neighbours: [],
-            profileName: null
+            profileName: null,
+            loader: true,
+            blurLoad: true,
         }
     },
     methods: {
@@ -92,7 +97,38 @@ export default {
         }
     },
     created() {
-        
+        navigator.geolocation.getCurrentPosition( (position) => {
+      var currentLocation = position.coords
+      var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+
+      db.collection('signUp').get()
+          .then(snapshot => {
+              snapshot.forEach((doc) => {
+      
+                      // The target longitude and latitude
+                  var targetlong = doc.data().userLocation.long;                         
+                  var targetlat = doc.data().userLocation.lat;
+                  let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
+                  if (distance <= 1 && distance >= 0) {
+                      if (doc.data().name !== this.profileName) {
+                          this.neighbours.push(doc.data())
+                          this.blurLoad = false
+                          this.loader = false
+                      }
+                      
+                      // this.$store.dispatch('neighbours', doc.data())
+                      // this.$store.dispatch('addNeighbours', doc.data())
+                      // console.log(this.neighbourArr)
+                  }
+
+                  
+              })
+    
+          })
+        //   console.log(this.neighbourArr)
+        //   this.$store.dispatch('neighbours', this.neighbourArr)
+          
+     })
 
         
         // Get my profile and check if im in the neighbour array
@@ -107,11 +143,9 @@ export default {
                     }
                 })
                    // Store each from in the array excluding myself
-                        this.$store.getters.neighbours.forEach (neighbour => {
-                            if (neighbour.name !== this.profileName) {
-                                this.neighbours.push(neighbour)
-                            }
-                        })
+                        // this.$store.getters.neighbours.forEach (neighbour => {
+                            
+                        // })
             })
 
             // this.neighbours = this.$store.state.neighbours
@@ -164,8 +198,8 @@ export default {
     }
 
     .image {
-        width: 60px;
-        height: 100%;
+        /* width: 60px; */
+        /* height: 100%; */
         border-radius: 50%;
         box-shadow: 0 0 0 1px rgba(0,0,0,.15), 0 2px 3px rgba(0,0,0,.2);
     }
@@ -191,4 +225,23 @@ export default {
     .pointer {
         cursor: pointer;
     }
+
+    .loader {
+       position: absolute;
+       top: 50%;
+       left:50%;
+       z-index: 2;
+       
+     }
+
+     .blur-bg {
+      
+       width: 100%;
+       height: 100vh;
+       position: absolute;
+       z-index: 1;
+       background-color: black;
+       opacity: 0.9;
+       /* filter: blur(5px) brightness(30%); */
+     }
 </style>

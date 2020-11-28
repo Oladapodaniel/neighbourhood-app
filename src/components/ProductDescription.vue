@@ -51,7 +51,7 @@
                                                 <div class="col-3 des-text">Price:</div> <div class="col-9">N{{ detail.price }}.00</div>
                                                 <div class="col-3 des-text">Description:</div> <div class="col-9">{{ detail.description }}</div>
                                                 <div class="col-3 des-text">Sale-Type:</div> <div class="col-9">{{ detail.saleType }}</div>
-                                                <div class="col-3 des-text">Negotaible:</div> <div class="col-9">{{ detail.negotiable }}</div>
+                                                <div class="col-3 des-text">Negotiable:</div> <div class="col-9" v-if="detail.negotiable">Negotiable</div> <div class="col-9" v-else>Non-Negotiable</div>                                         
                                                 <div class="col-sm-12 des-header">Seller Info</div>
                                                 <div class="col-3 des-text">Name:</div> <div class="col-9">{{ detail.personName }}</div>
                                                 <div class="col-3 des-text">Email:</div> <div class="col-9">{{ detail.email }}</div>

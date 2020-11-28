@@ -38,7 +38,7 @@
                  </div>
              </div>
              <div class="col-10 col-md-5 col-xl-4 offset-1 offset-md-0 offset-xl-1">
-                <div class="card adjust">
+                <div class="card1 card adjust">
                     <div class="card-body">
                         <form>
                              <div class="login-title">LOG IN</div>
@@ -92,7 +92,7 @@
                             <div class="col-4 offset-1 offset-sm-0 col-lg-1 d-sm-none d-lg-block text-top row align-content-center"><img src="../assets/connect.svg" width="80%"></div>
                         <div class="col-10 offset-1 offset-sm-0 col-sm-5 mb-5 text-top row">Share goods and recommendations
                             Find a great babysitter or trusty dentist. Borrow a ladder or sell that old bookcase.</div>
-                        <div class="col-sm-5 d-none d-sm-block text-top adjust-second-bottom"><img src="../assets/svg-4.svg" width="100%" height="150px"></div>
+                        <div class="col-sm-5 d-none d-sm-block text-top adjust-second-bottom anim5"><img src="../assets/svg-4.svg" width="100%" height="150px"></div>
                     <!-- </div> -->
                    
                     
@@ -103,18 +103,18 @@
          <div class="third-pane">
              <div class="container">
                  <div class="row row-content">
-                     <div class="col-10 offset-1 offset-sm-0 col-sm-12 adjust-third-top text-center">A private environment designed just for you and your neighbours.</div>
+                     <div class="col-10 offset-1 offset-sm-0 col-sm-12 adjust-third-top text-center anim2">A private environment designed just for you and your neighbours.</div>
                          <div class="col-8 offset-2 offset-sm-0 col-sm-6 col-md-4 mt-5 card-adjust adjust-second-bottom">
-                            <div class="card shad h-100">
+                            <div class="card shad card2 h-100">
                             <img src="../assets/secured.jpg" class="card-img-top" alt="secured">
                             <div class="card-body">
-                                <p class="card-text">Password-protected websites
+                                <p class="card-text ">Password-protected websites
                                 Each website is password-protected and not accessible by search engines</p>
                             </div>
                             </div>
                          </div>
                          <div class="col-8 offset-2 offset-sm-0 col-sm-6 col-md-4 mt-5 card-adjust adjust-second-bottom">
-                              <div class="card shad h-100">
+                              <div class="card card2 shad h-100">
                             <img src="../assets/people.jpg" class="card-img-top" alt="secured">
                             <div class="card-body">
                                 <p class="card-text">Only real neighbours allowed
@@ -123,7 +123,7 @@
                             </div>
                          </div>
                          <div class="col-8 offset-2 offset-sm-3 offset-md-0 col-sm-6 col-md-4 mt-5 adjust-second-bottom">
-                             <div class="card shad h-100">
+                             <div class="card card2 shad h-100">
                             <img src="../assets/confidential.jpg" class="card-img-top" height="192px" alt="secured">
                             <div class="card-body">
                                 <p class="card-text">Your personal information is safe
@@ -187,7 +187,7 @@ export default {
         getDetails: [],
         IndividualDetail: null,
         feedback: null,
-        neighbourArr: []
+        // neighbourArr: []
         
     }
   },
@@ -196,15 +196,15 @@ export default {
         for (let i = 0; i < this.getDetails.length; i++) {
             
         // Get their location
-                navigator.geolocation.getCurrentPosition( (position) => {
-                var currentLocation = position.coords
-                var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+                // navigator.geolocation.getCurrentPosition( (position, error) => {
+                // var currentLocation = position.coords
+                // var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
                 
-                let distance = disCheck(this.getDetails[i].userLocation.lat, this.getDetails[i].userLocation.long, userLocation.lat, userLocation.long)
+                // let distance = disCheck(this.getDetails[i].userLocation.lat, this.getDetails[i].userLocation.long, userLocation.lat, userLocation.long)
                 
-                if (distance <= 1 && distance >= 0) {
-                    this.neighbourArr.push(this.getDetails[i])
-                }
+                // if (distance <= 1 && distance >= 0) {
+                //     this.neighbourArr.push(this.getDetails[i])
+                // }
                 if (this.email === this.getDetails[i].email && this.password === this.getDetails[i].password ) {
                     this.IndividualDetail = this.getDetails[i]
                     this.$router.push({ name: 'Timeline', params: { userId: this.IndividualDetail.id } })
@@ -221,7 +221,11 @@ export default {
                     }, 3000);
             }
 
-        })
+        //     if (error) {
+        //     swal('Geolocation Not Supported', 'Browser does not support Geolation', 'error')
+        //     }
+
+        // })
             
         }
         this.$store.dispatch('neighbours', this.neighbourArr)
@@ -253,24 +257,32 @@ export default {
   
  
       let tl = gsap.timeline()
-      tl.from('.card', { duration: 1, opacity: 0, y: -100 })
       tl.from('.anim1',{ duration: 1.5, x: -100, opacity: 0, stagger: 0.5 })
-      gsap.from('.anim3', { duration: 3, opacity: 0, ease: "elastic.out(1, 0.3)", rotate: 360, scale:0.1, scrollTrigger: {
+      tl.from('.card1', { duration: 1, opacity: 0, y: -100 })
+      gsap.from('.anim3', { duration: 3, opacity: 0, ease: "expo", rotate: 180, scale:0.1, scrollTrigger: {
           trigger: '.anim3',
-          start: 'top 75%',
-          end: 'bottom 25%',
+          start: 'top 60%',
+          end: 'bottom 40%',
           toggleAction: 'play pause resume restart'
       } })
       gsap.from('.anim2',{ duration: 1.5, y: -100, opacity: 0, scrollTrigger:{
           trigger: '.anim2',
-          start: 'top 75%',
-          end: 'bottom 25%'
+          start: 'top 60%',
+          end: 'bottom 40%'
       } })
-      gsap.from('.anim4', { duration: 1, opacity: 0, ease: 'bounce', y: -200, scrollTrigger: {
+      gsap.from('.anim4', { duration: 2, opacity: 0, ease: 'bounce', y: -200, scrollTrigger: {
           trigger: '.anim4',
           start: 'top 60%',
           end: 'bottom 40%'
       }})
+
+      gsap.from('.anim5', { duration: 2, opacity: 0, ease: 'circ', y: -200, scrollTrigger: {
+          trigger: '.anim5',
+          start: 'top 60%',
+          end: 'bottom 40%'
+      }})
+
+    tl.from('.card2',{ duration: 1.5, y: -100, opacity: 0, stagger: 0.7 })
 
     //     tl.to('.animate', 0.4, {
     //   scale: 0.8,

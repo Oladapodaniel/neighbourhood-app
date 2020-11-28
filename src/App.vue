@@ -7,7 +7,7 @@
 
 <script> 
 import db from './firebase/init'
-import disCheck from './distanceCheck/distanceCheck'
+
 // import SearchNeighbour from './components/SearchNeighbour'
 export default {
   name: 'App',
@@ -20,33 +20,7 @@ export default {
     }
   },
   created () {
-     navigator.geolocation.getCurrentPosition( (position) => {
-      var currentLocation = position.coords
-      var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
-
-      db.collection('signUp').get()
-          .then(snapshot => {
-              snapshot.forEach((doc) => {
-      
-                      // The target longitude and latitude
-                  var targetlong = doc.data().userLocation.long;                         
-                  var targetlat = doc.data().userLocation.lat;
-                  let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
-                  if (distance <= 1 && distance >= 0) {
-                      this.neighbourArr.push(doc.data())
-                      // this.$store.dispatch('neighbours', doc.data())
-                      // this.$store.dispatch('addNeighbours', doc.data())
-                      // console.log(this.neighbourArr)
-                  }
-
-                  
-              })
-    
-          })
-          console.log(this.neighbourArr)
-          this.$store.dispatch('neighbours', this.neighbourArr)
-          
-     })
+     
           
   }
  

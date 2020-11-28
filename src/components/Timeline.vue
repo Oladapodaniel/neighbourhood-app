@@ -110,7 +110,8 @@
                         <div v-for="(text, index) in textArr" :key="index" class="col-sm-12">
                         <div class="card chat mt-3">
                         <div class="row head-bg">
-                            <div class="col-3 col-sm-2 col-md-3 col-lg-2"><img :src="text.imageKey" class="img" width="100%" height="40px"></div>
+                            <!-- <div class="col-3 col-sm-2 col-md-3 col-lg-2"><img src="../assets/avatar-male.jpg" class="img" width="100%" height="40px"></div> -->
+                            <div class="col-3 col-sm-2 col-md-3 col-lg-2" ><img :src="text.imageKey" class="img" width="100%"></div>
                             <div class="col-7">
                                 <div class="name">{{ text.name }}</div>
                                 <div class="time">{{ text.time }}</div>
@@ -118,7 +119,7 @@
                         </div>
                         <div class="text">{{ text.text }}</div>
                         <div>
-                            <span class="like" @click="like($event, text.id)"><img src="../assets/icons/svg/like3.svg"></span>
+                            <!-- <span class="like" @click="like($event, text.id)"><img src="../assets/icons/svg/like3.svg"></span> -->
                             <!-- <span class="like" @click="like($event, text.id)" ><img :src="text.like"></span> -->
                             <!-- <span class="comment">comment</span> -->
                         </div>
@@ -204,6 +205,7 @@ import db from '@/firebase/init'
 import { bus } from '../main'
 import SearchNeighbour from './SearchNeighbour'
 import GMaps from '../../gmaps.js'
+import disCheck from '../distanceCheck/distanceCheck'
 export default {
     name: 'Timeline',
     components: {
@@ -213,10 +215,11 @@ export default {
         return {
             text: null,
             textArr: [],
-            profile: null,
+            profile: {},
             lat: null,
             lng: null,
             neighbours: [],
+            profileName: null,
             loader: true,
             blurLoad: true,
             // showLike1: true,
@@ -225,6 +228,7 @@ export default {
     },
     methods: {
         post () {
+
             let chat = {
                 name: this.profile.name,
                 time: new Date().toLocaleTimeString(),
@@ -232,6 +236,11 @@ export default {
                 imageKey: this.profile.imageKey,
                 timestamp: new Date().getTime()/1000
             }
+            if (this.profile.imageKey == undefined) {
+                // chat.imageKey = `<img src="../assets/avatar-male.jpg" class="img" width="100%" height="40px">`
+                swal('Upload Your Picture', "Let your neighbours see who they are chatting with", 'error')
+            }
+            
 
 // iF chat.name is equal to one of the neighbours passed in, send the message
 // I pray it works in Jeus name Amen
@@ -312,22 +321,58 @@ console.log(this.textArr)
 
       
         // Get the data in the database signUp collection match it with the id passed in to get the whole user profile
-        db.collection('signUp').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
+        // db.collection('signUp').get()
+        //     .then(snapshot => {
+        //         snapshot.forEach(doc => {
+                    
+        //         })
+
+                      navigator.geolocation.getCurrentPosition( (position) => {
+      var currentLocation = position.coords
+      var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+
+      db.collection('signUp').get()
+          .then(snapshot => {
+              snapshot.forEach((doc) => {
+                  if (this.$route.params.userId === doc.id) {
+                        this.profileName = doc.data().name
+                    }
+                    
                     if (this.$route.params.userId === doc.id) {
                         this.profile = doc.data();
                         this.blurLoad = false
                         this.loader = false
                     }
-                })
+                      // The target longitude and latitude
+                  var targetlong = doc.data().userLocation.long;                         
+                  var targetlat = doc.data().userLocation.lat;
+                  let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
+               if (distance <= 1 && distance >= 0) {
+                      if (doc.data().name !== this.profileName) {
+                          this.neighbours.push(doc.data())
+                      }
+                      
+                //       // this.$store.dispatch('neighbours', doc.data())
+                //       // this.$store.dispatch('addNeighbours', doc.data())
+                //       // console.log(this.neighbourArr)
+               }
+
+                  
+              })
+    
+          })
+        //   console.log(this.neighbourArr)
+        //   this.$store.dispatch('neighbours', this.neighbourArr)
+          
+     })
+
                 // Store each from in the array excluding myself
-                    this.$store.getters.neighbours.forEach (neighbour => {
-                        if (neighbour.name !== this.profile.name) {
-                            this.neighbours.push(neighbour)
-                        }
-                    })
-            })
+                    // this.$store.getters.neighbours.forEach (neighbour => {
+                    //     if (neighbour.name !== this.profile.name) {
+                    //         this.neighbours.push(neighbour)
+                    //     }
+                    // })
+            // })
         //  Listen for events or changes that occur in the database chat collection, receive the data and push it to the array that will display it
         db.collection('chat').onSnapshot(snapshot => {
                 snapshot.docChanges().forEach(change => {

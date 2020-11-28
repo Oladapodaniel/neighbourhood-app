@@ -104,7 +104,7 @@ export default {
             detailsArr: [],
             feedback: null,
             userId: null,
-            neighbourArr: [],
+            // neighbourArr: [],
             geocodeLocation: null,
             loader: false,
             blurLoad: false
@@ -119,9 +119,9 @@ export default {
             // }   else {
 
                 // Get their location
-                    navigator.geolocation.getCurrentPosition( (position) => {
-                    var currentLocation = position.coords
-                    var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+                    // navigator.geolocation.getCurrentPosition( (position) => {
+                    // var currentLocation = position.coords
+                    // var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
                     // var userLocation = { lat: 22.9998668, long: 33.7345666777 }
                  
                     // Geocode users location
@@ -149,8 +149,8 @@ export default {
                     address: this.address,
                     dateOfBirth: this.dateOfBirth,
                     password: this.password,
-                    check: this.check,
-                    userLocation: userLocation
+                    check: this.check
+                    // userLocation: userLocation
                     }
 
                     //  Send Details here
@@ -172,12 +172,12 @@ export default {
                                       
                                     
                                            // The target longitude and latitude
-                                        var targetlong = doc.data().userLocation.long;                         
-                                        var targetlat = doc.data().userLocation.lat;
-                                        let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
-                                        if (distance <= 1 && distance >= 0) {
-                                            this.neighbourArr.push(doc.data())
-                                        }
+                                        // var targetlong = doc.data().userLocation.long;                         
+                                        // var targetlat = doc.data().userLocation.lat;
+                                        // let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
+                                        // if (distance <= 1 && distance >= 0) {
+                                        //     this.neighbourArr.push(doc.data())
+                                        // }
                                         if (details.name == doc.data().name && details.password == doc.data().password && doc.data().check){
                                                 this.userId = doc.id
                                                 details.userId = doc.id
@@ -188,7 +188,7 @@ export default {
                                         // console.log(userLocation.long, userLocation.lat, targetlong, targetlat)
                                     })
                                     // bus.$emit('neighbours', this.neighbourArr)
-                                    this.$store.dispatch('neighbours', this.neighbourArr)
+                                    // this.$store.dispatch('neighbours', this.neighbourArr)
                                     // this.$store.state.arr = this.neighbourArr;
                                 })
                         })
@@ -197,7 +197,7 @@ export default {
                         this.blurLoad = false
                         this.loader = false
                     }
-                    })
+                    // })
 
                 // //  Save their details with location to database
                 //     db.collection('signUp').add(details)

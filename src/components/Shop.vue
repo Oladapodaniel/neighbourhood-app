@@ -60,7 +60,7 @@
                     <!-- <div class=""> -->
                         <div class="row">
                             <div class="col-3 col-md-4">
-                                <img :src="product.personImage" class="personImage" width="100%" height="60%">
+                                <img :src="product.personImage" class="personImage" width="100%" height="80%">
                             </div>
                             <div class="col-7 col-sm-7 nameTime">
                                 <div class="name">{{ product.personName }}</div>
@@ -72,7 +72,7 @@
                             </div> -->
                             <router-link :to="{ name: 'ProductDescription', params: { productDescription: product.id } }">
                             <div class="image_container col-sm-12">
-                                <img :src="product.imageKey" width="100%" height="" class="image-bg">
+                                <img :src="product.imageKey" width="100%" class="image-bg">
                             </div>
                             </router-link>
                         </div>

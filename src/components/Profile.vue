@@ -17,7 +17,7 @@
                         <router-link :to="{ name: 'Neighbours' }" class="text-white">Neighbours</router-link>   
                       </li>
                       <li class="nav-item dropdown">
-                            <!-- <div><img src="../assets/icons/material icons/user.svg"></div> -->
+                            <div><img :src="profile.imageKey" width="15%" class="dp-pro"></div>
                             <a class="mt-3 nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 {{ profile.name.split(' ')[0] }}
                             </a>
@@ -75,9 +75,7 @@
                 </div>
             </div>
         </div> -->
-        <!-- <div>{{ imageKey1 }}</div> -->
-        <div><img :src="imageKey1"></div>
-        <input type="file" @change="image">
+       
     </div>
 </template>
 
@@ -88,8 +86,7 @@ export default {
     data () {
         name: 'profile'
         return {
-            profile: null,
-            imageKey1: null
+            profile: null
         }
     },
     created () {
@@ -109,14 +106,7 @@ export default {
     },
     mounted () {
   
-       let tl = gsap.timeline()
-    //    let bgProfile = document.querySelector('.bg-profile')
-
-    //    if (bgProfile) {
-           tl.from('.bg-profile', { duration: 1, opacity: 0, y: -100 })
-    //    } else {
-    //        console.log('doesnot exist')
-    //    }  
+    
     },
     updated () {
         let container = document.querySelector('#container')
@@ -127,19 +117,31 @@ export default {
             });
     },
     methods: {
-        image (e) {
-            console.log(e.target.files[0])
-            let reader = new FileReader()
-            reader.readAsDataURL(e.target.files[0])
-            reader.onload = (e) => {
-                this.imageKey1 = e.target.result
-            }
-        }
+      
+    
     }
 }
 </script>
 
 <style scoped>
+    .box {
+        /* border:2px solid red; */
+        width: 100px;
+        height: 100px;
+        background-color: white;
+        border-radius: 5px;
+        position: relative;
+        left: 50px;
+        padding: 10px;
+        transition: all .4s ease-in
+    }
+
+    .box:hover {
+        box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        /* transform: scale(1.1,1.1) */
+        /* , 0 6px 20px 0 rgba(0, 0, 0, 0.19); */
+    }
+
     .profile {
         background-color: rgba(224, 227, 231, 0.541);
         height: 100vh;
@@ -154,6 +156,14 @@ export default {
         z-index: 10;
         position: absolute;
         width: 100%;
+    }
+
+    .dp-pro {
+        position: absolute;
+        top:3px;
+        right: 40px;
+        width: 30%;
+        border-radius: 50%
     }
 
     .push-down {
@@ -223,5 +233,25 @@ export default {
     .bg-profile {
         background-color: rgb(37, 37, 37);
         padding: 20px;
+    }
+
+    @media(max-width: 991px) {
+        .dp-pro {
+        position: absolute;
+        top:3px;
+        right: 50%;
+        width:4%;
+        border-radius: 50%
+    }
+    }
+
+    @media(max-width: 767px) {
+        .dp-pro {
+        position: absolute;
+        top:3px;
+        right: 50%;
+        width:5%;
+        border-radius: 50%
+    }
     }
 </style>

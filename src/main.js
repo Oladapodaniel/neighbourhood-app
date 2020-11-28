@@ -27,7 +27,7 @@ Vue.config.productionTip = false
 Vue.use(jquery)
 // Vue.use(popperjs)
 Vue.use(bootstrap)
-gsap.registerPlugin(ScrollTrigger)
+// gsap.registerPlugin(ScrollTrigger)
 Vue.use(VueGeolocation)
 Vue.use(Autocomplete)
 
