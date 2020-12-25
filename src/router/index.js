@@ -10,7 +10,6 @@ import EditProfile from '@/components/EditProfile'
 import Neighbours from '@/components/Neighbours'
 import Shop from '@/components/Shop'
 import ProductDescription from '@/components/ProductDescription'
-import Splash from '@/components/Splash'
 
 Vue.use(Router)
 
@@ -66,11 +65,6 @@ export default new Router({
        path: '/timeline/:userId/shop/:productDescription',
        name: 'ProductDescription',
        component: ProductDescription
-     },
-     {
-       path: '/splash',
-       name: 'Splash',
-       component: Splash
      }
   ]
 })

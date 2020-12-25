@@ -40,33 +40,86 @@
             <div>{{ neighbour.userId }}</div>
             <!-- <div>{{ neighbour.id }}</div> -->
         </div>
-        <div class="container">
+        
+        <div  v-if="neighbours.length >= 1" class="container">
             <div class="row">
                 <div class="col-sm-12 mt-5">
-                    <!-- <div class="card"> -->
                         <div class="col-12 text-center display-4 pt-5">
                             Meet Your Neighbours
                         </div>
                         <div class="card-body card-bg">
                             <div v-for="neighbour in neighbours" :key="neighbour.userId" class="neighbourNames">
-                                <!-- <div v-if="neighbour.name !== profileame"></div> -->
                                 <div class="row">
-                                    <div class="col-2 col-sm-2 col-lg-1"><img :src="neighbour.imageKey" class="image" width="100%"></div>
-                                    <div class="col-6 offset-1 offset-sm-0">
+                                    <div v-if="!neighbour.imageKey" class="col-2 col-sm-2 col-lg-1"><img src="../assets/avatar-female.png" width="100%" height="auto"></div>
+                                    <div v-else class="col-2 col-sm-2 col-lg-1"><img :src="neighbour.imageKey" class="image" width="100%"></div>
+                                    <div class="col-6">
                                         <div>{{ neighbour.name }}</div>
                                         <div class="text-small">active</div>
                                     </div>
-                                    <!-- <div class="col-4 col-sm-3 align-self-center"><a :href="`tel:${neighbour.phoneNumber}`"><img src="../assets/call.svg"></a>&nbsp;&nbsp;&nbsp;<img src="../assets/chat.svg">&nbsp;&nbsp;&nbsp;<img src="../assets/whatsapp.svg"></div> -->
-                                    <div class="col-3 col-sm-3 offset-sm-1 offset-lg-2 align-self-center"><img src="../assets/call.svg" @click="call(neighbour.phoneNumber)" class="pointer">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="../assets/whatsapp.svg" @click="whatsapp(neighbour.phoneNumber)" class="pointer"></div>
+                                    <div class="col-2 col-lg-1 offset-lg-2 align-self-center"><img src="../assets/call.svg" @click="call(neighbour.phoneNumber)" class="pointer"></div>
+                                    <div class="col-2 col-lg-1 align-self-center"><img src="../assets/whatsapp.svg" @click="whatsapp(neighbour.phoneNumber)" class="pointer"></div>
                                 </div>
                                 
-                                <!-- <div>{{ neighbour.imageKey }}</div> -->
                             </div>
                         </div>
-                    <!-- </div> -->
                 </div>
             </div>
         </div>
+        <div v-else class="d-flex justify-content-center text-center"><div class="push-down"><div>Whoops! You have no neigbours yet</div><div class="btn btn-invite mt-3" data-toggle="modal" data-target="#exampleModal">Invite</div></div></div>
+
+        <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Share</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-sm-4 mt-2">
+                    <a href="whatsapp://send?text=Connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood.%20Click%20https://neighbourhood-app-f42b1.web.app%20now!">
+                        <img src="../assets/icons/png/whatsapp.svg" width="63px">
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 mt-2">
+                    <a href="http://www.facebook.com/sharer.php?u=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                        <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 mt-2">
+                     <a href="mailto:?Subject=Connect%20With%20Your%20Neighbours&amp;Body=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood%20https://neighbourhood-app-f42b1.web.app">
+                        <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 mt-2">
+                    <a href="https://plus.google.com/share?url=https://neighbourhood-app-f42b1.web.app" target="_blank">
+                        <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 mt-2">
+                    <a href="https://twitter.com/share?url=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                        <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
+                    </a>
+                </div>
+                <div class="col-6 col-sm-4 mt-2">
+                    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                        <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
+                    </a>
+                </div>
+            </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-invite">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
     </div>
 </template>
 
@@ -112,8 +165,7 @@ export default {
                   if (distance <= 1 && distance >= 0) {
                       if (doc.data().name !== this.profileName) {
                           this.neighbours.push(doc.data())
-                          this.blurLoad = false
-                          this.loader = false
+                          
                       }
                       
                       // this.$store.dispatch('neighbours', doc.data())
@@ -137,6 +189,8 @@ export default {
                 snapshot.forEach(doc => {
                     if (this.$route.params.userId === doc.id) {
                         this.profileName = doc.data().name
+                        this.blurLoad = false
+                        this.loader = false
                         // this.profile.userId = doc.id
                         
                             // console.log(this.$route.params.userId)
@@ -169,6 +223,9 @@ export default {
         //     })
         // })
    
+    },
+    mounted () {
+        console.log(this.neighbours)
     },
     updated () {
         let container = document.querySelector('#container')
@@ -224,6 +281,29 @@ export default {
 
     .pointer {
         cursor: pointer;
+    }
+
+    .btn-invite {
+        border-radius: 35px;
+        background: #BB4B01 0% 0% no-repeat padding-box;
+        box-shadow: 5px 15px 45px #00000042;
+        color: rgba(255, 255, 255, 0.918);
+    }
+
+    .modal-content {
+         border-radius: 0;
+         background: rgba(15, 15, 15, 0.87);
+         color: white;
+     }
+
+     .modal-content .container .row div img{
+        width: 50px;
+        padding: 10px;
+        border: 0;
+    }
+
+    .push-down {
+        margin-top: 80px;
     }
 
     .loader {

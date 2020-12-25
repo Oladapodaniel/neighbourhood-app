@@ -53,7 +53,7 @@
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                 <label class="form-check-label" for="exampleCheck1">Remember me</label>
                             </div> -->
-                            <button type="submit" @click="login" class="btn btn-info mt-2">Log In</button>
+                            <button type="submit" @click.prevent="login" class="btn btn-info mt-2">Log In</button>
                             <div class="mt-2 text-small text-danger" v-if="feedback">{{ feedback }}</div>
                             <!-- <div class="text-small text-center mt-2"> forgot password?</div> -->
                             <div class="text-small text-center mt-3">Dont have an account? 
@@ -207,6 +207,21 @@ export default {
                 // }
                 if (this.email === this.getDetails[i].email && this.password === this.getDetails[i].password ) {
                     this.IndividualDetail = this.getDetails[i]
+
+                    // Get users location to update it in firebase
+                    navigator.geolocation.getCurrentPosition( (position, error) => {
+                    var currentLocation = position.coords
+                    var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+
+                        // Now Update it
+                        db.collection('signUp').doc(this.IndividualDetail.id).update({
+                            userLocation: {
+                                lat: userLocation.lat,
+                                long: userLocation.long
+                            }
+                        })
+                    })
+                    
                     this.$router.push({ name: 'Timeline', params: { userId: this.IndividualDetail.id } })
                     // console.log(this.IndividualDetail.id)
                 } else if (!this.email || !this.password) {

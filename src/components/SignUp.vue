@@ -119,9 +119,9 @@ export default {
             // }   else {
 
                 // Get their location
-                    // navigator.geolocation.getCurrentPosition( (position) => {
-                    // var currentLocation = position.coords
-                    // var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+                    navigator.geolocation.getCurrentPosition( (position) => {
+                    var currentLocation = position.coords
+                    var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
                     // var userLocation = { lat: 22.9998668, long: 33.7345666777 }
                  
                     // Geocode users location
@@ -149,8 +149,8 @@ export default {
                     address: this.address,
                     dateOfBirth: this.dateOfBirth,
                     password: this.password,
-                    check: this.check
-                    // userLocation: userLocation
+                    check: this.check,
+                    userLocation: userLocation
                     }
 
                     //  Send Details here
@@ -197,7 +197,7 @@ export default {
                         this.blurLoad = false
                         this.loader = false
                     }
-                    // })
+                })
 
                 // //  Save their details with location to database
                 //     db.collection('signUp').add(details)
@@ -336,7 +336,7 @@ export default {
         }
     },
     created () {
-        // console.log(disCheck)
+        swal('Allow Location Access', "click 'Allow' to get neighbours around you if any ", 'warning')
     }
 }
 </script>

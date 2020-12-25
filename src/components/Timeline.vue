@@ -130,13 +130,13 @@
                     
                 </div>
                 <div v-else class="mt-5 offset-3 offset-md-2 offset-lg-3 text-center"><div>Whoops! You have no neigbours yet</div><div class="btn btn-invite mt-3" data-toggle="modal" data-target="#exampleModal">Invite</div></div>
-                 <!-- <div class="form-group row"> -->
-                        <div class="d-none d-md-block col-md-2 mt-5" v-if="neighbours.length >= 1">
-                            <button type="submit" @click="post" class="btn btn-info">
-                                Post
-                            </button>
-                        </div>
-                    <!-- </div> -->
+
+                    <div class="d-none d-md-block col-md-2 mt-5" v-if="neighbours.length >= 1">
+                        <button type="submit" @click="post" class="btn btn-info">
+                            Post
+                        </button>
+                    </div>
+
             </div>
         </div>
         
@@ -158,32 +158,32 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 col-sm-4 mt-2">
-                    <a href="whatsapp://send?text=Connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood.%20Click%20https://neighbourhood.com%20now!">
+                    <a href="whatsapp://send?text=Connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood.%20Click%20https://neighbourhood-app-f42b1.web.app%20now!">
                         <img src="../assets/icons/png/whatsapp.svg" width="63px">
                     </a>
                 </div>
                 <div class="col-6 col-sm-4 mt-2">
-                    <a href="http://www.facebook.com/sharer.php?u=https://neighbourhood.com&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                    <a href="http://www.facebook.com/sharer.php?u=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
                         <img src="https://simplesharebuttons.com/images/somacro/facebook.png" alt="Facebook" />
                     </a>
                 </div>
                 <div class="col-6 col-sm-4 mt-2">
-                     <a href="mailto:?Subject=Connect%20With%20Your%20Neighbours&amp;Body=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood%20https://neighbourhood.com">
+                     <a href="mailto:?Subject=Connect%20With%20Your%20Neighbours&amp;Body=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood%20https://neighbourhood-app-f42b1.web.app">
                         <img src="https://simplesharebuttons.com/images/somacro/email.png" alt="Email" />
                     </a>
                 </div>
                 <div class="col-6 col-sm-4 mt-2">
-                    <a href="https://plus.google.com/share?url=https://neighbourhood.com" target="_blank">
+                    <a href="https://plus.google.com/share?url=https://neighbourhood-app-f42b1.web.app" target="_blank">
                         <img src="https://simplesharebuttons.com/images/somacro/google.png" alt="Google" />
                     </a>
                 </div>
                 <div class="col-6 col-sm-4 mt-2">
-                    <a href="https://twitter.com/share?url=https://neighbourhood.com&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                    <a href="https://twitter.com/share?url=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
                         <img src="https://simplesharebuttons.com/images/somacro/twitter.png" alt="Twitter" />
                     </a>
                 </div>
                 <div class="col-6 col-sm-4 mt-2">
-                    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://neighbourhood.com&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
+                    <a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=https://neighbourhood-app-f42b1.web.app&amp;text=Meet%20and%20connect%20with%20your%20neighbours.%20Join%20The%20Neighbourhood" target="_blank">
                         <img src="https://simplesharebuttons.com/images/somacro/linkedin.png" alt="LinkedIn" />
                     </a>
                 </div>
@@ -470,10 +470,6 @@ console.log(this.textArr)
         font-weight: bold;
     }
 
-.side-nav router-link {
-    /* text-decoration: none; */
-    border: 2px solid red;
-}
     .textarea {
         /* border: 1px solid rgb(173, 173, 173); */
         border-radius: 0;
@@ -501,9 +497,7 @@ console.log(this.textArr)
   /* 0 6px 6px rgba(0,0,0,0.23); */
     /* box-shadow: rgba(91, 124, 196, 0.2) 0px 10px 30px 0px; */
 }
-    .head-bg {
-        /* margin-left: 5px; */
-    }
+
 
     .head-bg div:nth-child(2) {
         padding-left: 0;
