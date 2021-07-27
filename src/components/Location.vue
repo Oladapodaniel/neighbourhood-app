@@ -269,7 +269,7 @@ export default {
   findNearbyButtonPressed  () {
     this.blurLoad = true
     this.loader = true
-    let url = `https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.lat},${this.lng}&type=${this.type}&radius=${this.radius * 1000}&key=AIzaSyDVYGCCOjpjJz1LYedKOTe4S9h59yBVGZ8`
+    let url = `https://fierce-gorge-41831.herokuapp.com/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${this.lat},${this.lng}&type=${this.type}&radius=${this.radius * 1000}&key=AIzaSyBk6uA_wzsUTAHQmCQG2b5wu0S0jSFQH9Q`
 
     axios.get(url).then(response => {
       this.places = response.data.results
@@ -314,7 +314,7 @@ export default {
   },
     async getStreetAddressFrom (lat, long) {
       try {
-        var { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.lat},${this.lng}&key=AIzaSyDVYGCCOjpjJz1LYedKOTe4S9h59yBVGZ8`)
+        var { data } = await axios.get(`https://fierce-gorge-41831.herokuapp.com/https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.lat},${this.lng}&key=AIzaSyBk6uA_wzsUTAHQmCQG2b5wu0S0jSFQH9Q`)
         if (data.error_message) {
           console.log(data.error_message)
         } else {
@@ -329,7 +329,7 @@ export default {
     getDirections () {
       this.blurLoad = true
       this.loader =true
-      axios.get(`https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${this.originPlaceId}&destination=place_id:${this.desPlaceId}&mode=${this.mode}&key=AIzaSyDVYGCCOjpjJz1LYedKOTe4S9h59yBVGZ8`)
+      axios.get(`https://fierce-gorge-41831.herokuapp.com/https://maps.googleapis.com/maps/api/directions/json?origin=place_id:${this.originPlaceId}&destination=place_id:${this.desPlaceId}&mode=${this.mode}&key=AIzaSyBk6uA_wzsUTAHQmCQG2b5wu0S0jSFQH9Q`)
         .then(response => {
           let desCoord = document.querySelector('#desCoord');
           let directionsPanel = document.getElementById('directionsPanel');
