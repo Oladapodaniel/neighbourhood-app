@@ -22,7 +22,7 @@ let router = new Router({
       component: LandingPage,
     },
     {
-      path: '/timeline/:userId?',
+      path: '/timeline',
       name: 'Timeline',
       component: Timeline,
       meta: {
