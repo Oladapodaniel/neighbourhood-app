@@ -2,17 +2,16 @@
     <div class="neighbours" id="container">
         <div class="blur-bg" v-if="blurLoad"></div>
         <div class="loader-10 loader" v-if="loader"></div>
-     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+     <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <form class="form-inline my-2 my-lg-0 ml-5">
                       
-                      <!-- <input class="form-control search mr-sm-2" type="text" placeholder="Search your neighbours" arialabel="Search"> -->
-                      <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit" v-on:click.prevent="searchDoctor()">Search</button> -->
+                     
                   </form>
-                   <!-- <div><SearchNeighbour></SearchNeighbour></div> -->
+                
                   <ul class="navbar-nav ml-auto text-center">
                       <li class="nav-item ml-4 text-white">
                           <div><img src="../assets/icons/material icons/home.svg"></div>
@@ -35,7 +34,8 @@
 
              </div>
               </div>
-         </nav>
+         </nav> -->
+         <Nav />
         <div v-for="neighbour in neighbours" :key="neighbour.id">
             <div>{{ neighbour.userId }}</div>
             <!-- <div>{{ neighbour.id }}</div> -->
@@ -127,10 +127,13 @@
 import db from '../firebase/init'
 import SearchNeighbour from './SearchNeighbour'
 import disCheck from '../distanceCheck/distanceCheck'
+import Nav from "./Nav"
+import  { auth } from "firebase/app";
 export default {
     name: 'Neighbours',
     components: {
-     SearchNeighbour
+     SearchNeighbour,
+     Nav
   },
     data () {
         return {
@@ -138,6 +141,7 @@ export default {
             profileName: null,
             loader: true,
             blurLoad: true,
+            user: auth().currentUser
         }
     },
     methods: {
@@ -147,9 +151,21 @@ export default {
         },
         whatsapp (number) {
             window.location.href = `https://wa.me/+234${number}`
+        },
+        getProfile () {
+            const uid = this.$store.getters.currentUser.uid ? this.$store.getters.currentUser.uid : this.user.uid
+                db.collection("signUp").where('uid', '==', uid).get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => { 
+                        // console.log(doc.data())
+                        this.profileName = doc.data().name
+                    })
+                })
         }
     },
     created() {
+        this.getProfile()
+
         navigator.geolocation.getCurrentPosition( (position) => {
       var currentLocation = position.coords
       var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
@@ -164,8 +180,9 @@ export default {
                   let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
                   if (distance <= 1 && distance >= 0) {
                       if (doc.data().name !== this.profileName) {
-                          this.neighbours.push(doc.data())
-                          
+                          this.neighbours.push(doc.data()) 
+                          this.blurLoad = false
+                          this.loader = false 
                       }
                       
                       // this.$store.dispatch('neighbours', doc.data())
@@ -184,23 +201,25 @@ export default {
 
         
         // Get my profile and check if im in the neighbour array
-        db.collection('signUp').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    if (this.$route.params.userId === doc.id) {
-                        this.profileName = doc.data().name
-                        this.blurLoad = false
-                        this.loader = false
-                        // this.profile.userId = doc.id
+        // db.collection('signUp').get()
+        //     .then(snapshot => {
+        //         snapshot.forEach(doc => {
+        //             if (this.$route.params.userId === doc.id) {
+        //                 this.profileName = doc.data().name
+        //                 this.blurLoad = false
+        //                 this.loader = false
+        //                 // this.profile.userId = doc.id
                         
-                            // console.log(this.$route.params.userId)
-                    }
-                })
-                   // Store each from in the array excluding myself
-                        // this.$store.getters.neighbours.forEach (neighbour => {
+        //                     // console.log(this.$route.params.userId)
+        //             }
+        //         })
+        //            // Store each from in the array excluding myself
+        //                 // this.$store.getters.neighbours.forEach (neighbour => {
                             
-                        // })
-            })
+        //                 // })
+        //     })
+
+            
 
             // this.neighbours = this.$store.state.neighbours
             // this.neighbours = this.$store.getters.neighbours

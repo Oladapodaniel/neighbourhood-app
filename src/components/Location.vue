@@ -30,41 +30,7 @@
     </gmap-map> -->
 <div class="blur-bg" v-if="blurLoad"></div>
     <div class="loader-10 loader" v-if="loader"></div>
-
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-              <div class="container">
-                  <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
-                  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                  <form class="form-inline my-2 my-lg-0 ml-5">
-                      
-                      <!-- <input class="form-control search mr-sm-2" type="text" placeholder="Search your neighbours" arialabel="Search"> -->
-                      <!-- <button class="btn btn-outline-info my-2 my-sm-0" type="submit" v-on:click.prevent="searchDoctor()">Search</button> -->
-                  </form>
-                   <!-- <div><SearchNeighbour></SearchNeighbour></div> -->
-                  <ul class="navbar-nav ml-auto text-center">
-                      <li class="nav-item ml-4 text-white">
-                          <div><img src="../assets/icons/material icons/home.svg"></div>
-                        <router-link :to="{ name: 'Timeline' }" class="text-white">Timeline</router-link>   
-                      </li>
-                      <li class="nav-item ml-4 text-white">
-                          <div><img src="../assets/icons/material icons/neighbour.svg"></div>
-                        <router-link :to="{ name: 'Neighbours' }" class="text-white">Neighbours</router-link>   
-                      </li>
-                      <li class="nav-item ml-4">
-                          <div><img src="../assets/icons/material icons/user.svg"></div>
-                        <router-link  :to="{name: 'Profile'}" class="text-white">Profile</router-link>
-                      </li>
-                      <li class="nav-item ml-4">
-                          <div><img src="../assets/icons/material icons/logout.svg"></div>
-                        <router-link :to="{name: 'LandingPage'}" class="text-white">Logout</router-link>   
-                      </li>
-                  </ul>
-                  
-
-             </div>
-              </div>
-         </nav>
+    <Nav />
       <div class="body-bg">
       <div class="container">
         <div class="row margin-adjust">
@@ -234,10 +200,14 @@
 <script>
 // import * as GMaps from 'gmap-vue'
 // import GMaps from '../../gmaps.js'
-import axios from 'axios'
+import axios from 'axios';
+import Nav from "./Nav"
 
 export default {
   name: "GoogleMap",
+  components: {
+    Nav
+  },
   data() {
     return {
       // // default to Montreal to keep it simple

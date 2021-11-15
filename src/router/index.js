@@ -13,18 +13,21 @@ import ProductDescription from '@/components/ProductDescription'
 
 Vue.use(Router)
 
-export default new Router({
+let router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
       name: 'LandingPage',
-      component: LandingPage
+      component: LandingPage,
     },
     {
-      path: '/timeline/:userId',
+      path: '/timeline/:userId?',
       name: 'Timeline',
-      component: Timeline
+      component: Timeline,
+      meta: {
+        authRequired: true,
+      },
     },
     {
       path: '/sign-up',
@@ -37,34 +40,49 @@ export default new Router({
     //   component: FakeLocation
     // },
     {
-      path: '/timeline/:userId/location',
+      path: '/timeline/location',
       name: 'Location',
       component: Location
     },
      {
-       path: '/timeline/:userId/profile',
+       path: '/timeline/profile',
        name: 'Profile',
        component: Profile
      },
      {
-       path: '/timeline/:userId/profile/edit-profile',
+       path: '/timeline/profile/edit-profile',
        name: 'EditProfile',
        component: EditProfile
      },
      {
-       path: '/timeline/:userId/neighbours',
+       path: '/timeline/neighbours',
        name: 'Neighbours',
        component: Neighbours
      },
      {
-       path: '/timeline/:userId/shop',
+       path: '/timeline/shop',
        name: 'Shop',
        component: Shop
      },
      {
-       path: '/timeline/:userId/shop/:productDescription',
+       path: '/timeline/shop/:productDescription',
        name: 'ProductDescription',
        component: ProductDescription
      }
   ]
 })
+// Profile, EditProfile, Shop, ProductDescription
+
+// const router = createRouter({
+//   // history: createWebHistory(process.env.BASE_URL),
+//   routes
+// })
+
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('token')
+  if (to.name !== "LandingPage" && !token) next({ name: 'LandingPage' })
+  if (to.name === "SignUp" && !token) next(true)
+  else next()
+});
+
+export default router

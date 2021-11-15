@@ -1,12 +1,11 @@
 <template>
     <div class="profile" id="container">
-        
+        <Nav />
          <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                   <a class="navbar-brand" href="#"><img src="../assets/logo.jpg" width="30px">/< neighbourHood ></a>
                   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                   <!-- <div><SearchNeighbour></SearchNeighbour></div> -->
                   <ul class="navbar-nav ml-auto text-center">
                       <li class="nav-item mr-4 text-white">
                           <div><img src="../assets/icons/material icons/home.svg"></div>
@@ -17,9 +16,9 @@
                         <router-link :to="{ name: 'Neighbours' }" class="text-white">Neighbours</router-link>   
                       </li>
                       <li class="nav-item dropdown">
-                            <div><img :src="profile.imageKey" width="15%" class="dp-pro"></div>
+                            <div><img :src="profile ? profile.imageKey : ''" width="15%" class="dp-pro"></div>
                             <a class="mt-3 nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ profile.name.split(' ')[0] }}
+                                {{ profile ? profile.name.split(' ')[0] : "" }}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <router-link  :to="{name: 'EditProfile'}"><div class="dropdown-item">Edit Proflie</div></router-link>
@@ -34,23 +33,18 @@
               </div>
          </nav>
 
-
-        
-
-        
-
         <div class="container-fluid first-pane">
             <div class="row">
                 <div class="display-picture push-down col-10 offset-1 col-sm-5">
-                    <img :src="profile.imageKey" class="dp">
+                    <img :src="profile ? profile.imageKey : ''" class="dp">
                 </div>
                 <div class="col-sm-6 push-down bg-profile">
-                    <div class="name">{{ profile.name }}</div>
-                    <div class="email">{{ profile.email }}</div>
-                    <div class="phoneNumber">{{ profile.phoneNumber }}</div>
-                    <div class="address">{{ profile.address }}</div>
-                    <div class="date-of-birth">{{ profile.dateOfBirth }}</div>
-                    <div class="password">{{ profile.password }}</div>                       
+                    <div class="name">{{ profile ? profile.name : "" }}</div>
+                    <div class="email">{{ profile ? profile.email : "" }}</div>
+                    <div class="phoneNumber">{{ profile ? profile.phoneNumber : "" }}</div>
+                    <div class="address">{{ profile ? profile.address : "" }}</div>
+                    <div class="date-of-birth">{{ profile ? profile.dateOfBirth : "" }}</div>
+                    <div class="password">{{ profile ? profile.password : "" }}</div>                       
                 </div>
             </div>
         </div>
@@ -81,32 +75,54 @@
 
 <script>
 import db from '@/firebase/init'
+import Nav from './Nav'
+import  { auth } from "firebase/app";
 
 export default {
+    components: {
+        Nav
+    },
     data () {
         name: 'profile'
         return {
-            profile: null
+            profile: "",
+            user: {}
         }
     },
     created () {
-        db.collection('signUp').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    if (this.$route.params.userId === doc.id) {
-                        this.profile = doc.data()
-                        this.profile.userId = doc.id
-                        // console.log(this.profile)
-                            // console.log(this.$route.params.userId)
-                    }
+        console.log(1)
+        // db.collection('signUp').get()
+        //     .then(snapshot => {
+        //         console.log(2)
+        //         snapshot.forEach(doc => {
+        //             if (this.$route.params.userId === doc.id) {
+        //                 console.log(3)
+        //                 this.profile = doc.data()
+        //                 this.profile.userId = doc.id
+        //                 // console.log(this.profile)
+        //                     // console.log(this.$route.params.userId)
+        //             }
+        //         })
+        //     })
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user.uid)
+                this.user = user
+                // User is signed in.
+
+                //  Get the user profile
+                db.collection("signUp").where('uid', '==', this.user.uid).get()
+                .then(snapshot => {  
+                    snapshot.forEach((doc) => {
+                        this.profile = doc.data()                  
+                    })
                 })
+            } else {
+                console.log('No user is signed in.')
+            }
             })
 
             // console.log(this.userId)
-    },
-    mounted () {
-  
-    
     },
     updated () {
         let container = document.querySelector('#container')

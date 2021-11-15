@@ -139,6 +139,7 @@
 
 <script>
 import db from '@/firebase/init'
+import  { auth } from "firebase/app";
 export default {
     name: 'edit-profile',
     data () {
@@ -205,10 +206,16 @@ export default {
       
     },
     created () {
-        db.collection('signUp').get()
-            .then(snapshot => {
-                snapshot.forEach(doc => {
-                    if (this.$route.params.userId == doc.id) {
+         auth().onAuthStateChanged((user) => {
+            if (user) {
+                console.log(user.uid)
+                this.user = user
+                // User is signed in.
+
+                //  Get the user profile
+                db.collection("signUp").where('uid', '==', this.user.uid).get()
+                .then(snapshot => {  
+                    snapshot.forEach((doc) => {
                         this.userId = doc.id
                         console.log(doc.data())
                         this.name = doc.data().name
@@ -217,10 +224,29 @@ export default {
                         this.address = doc.data().address
                         this.gender = doc.data().gender
                         this.dateOfBirth = doc.data().dateOfBirth
-                        this.password = doc.data().password
-                    }
+                        this.password = doc.data().password                 
+                    })
                 })
+            } else {
+                console.log('No user is signed in.')
+            }
             })
+        // db.collection('signUp').get()
+        //     .then(snapshot => {
+        //         snapshot.forEach(doc => {
+        //             if (this.$route.params.userId == doc.id) {
+        //                 this.userId = doc.id
+        //                 console.log(doc.data())
+        //                 this.name = doc.data().name
+        //                 this.phoneNumber = doc.data().phoneNumber
+        //                 this.email = doc.data().email
+        //                 this.address = doc.data().address
+        //                 this.gender = doc.data().gender
+        //                 this.dateOfBirth = doc.data().dateOfBirth
+        //                 this.password = doc.data().password
+        //             }
+        //         })
+        //     })
     },
     updated () {
         let container = document.querySelector('#container')

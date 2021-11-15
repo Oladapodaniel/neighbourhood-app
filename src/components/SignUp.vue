@@ -87,9 +87,10 @@
 </template>
 
 <script>
+import { auth } from 'firebase/app'
 import db from '../firebase/init'
-import { bus } from '../main'
-import disCheck  from '../distanceCheck/distanceCheck'
+// import { bus } from '../main'
+// import disCheck  from '../distanceCheck/distanceCheck'
 export default {
     name: 'SignUp',
     data () {
@@ -118,86 +119,86 @@ export default {
             //     this.feedback = 'Please Fill In required Input!'
             // }   else {
 
-                // Get their location
-                    navigator.geolocation.getCurrentPosition( (position) => {
-                    var currentLocation = position.coords
-                    var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
-                    // var userLocation = { lat: 22.9998668, long: 33.7345666777 }
+                // // Get their location
+                //     navigator.geolocation.getCurrentPosition( (position) => {
+                //     var currentLocation = position.coords
+                //     var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+                //     // var userLocation = { lat: 22.9998668, long: 33.7345666777 }
                  
-                    // Geocode users location
-                //     const succesfulLookup = (position) => {
-                //     const {latitude, longitude } = position.coords;
-                //     fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=5642481b38ef4618803c56d2c3415008`)
-                //     .then(response => response.json())
-                //     .then(console.log)
-                //     .catch(err => console.log(err))
-                // }
-                // navigator.geolocation.getCurrentPosition(succesfulLookup, done)
+                //     // Geocode users location
+                // //     const succesfulLookup = (position) => {
+                // //     const {latitude, longitude } = position.coords;
+                // //     fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=5642481b38ef4618803c56d2c3415008`)
+                // //     .then(response => response.json())
+                // //     .then(console.log)
+                // //     .catch(err => console.log(err))
+                // // }
+                // // navigator.geolocation.getCurrentPosition(succesfulLookup, done)
 
-                //     function done (done) {
-                //         // console.log(done)
-                //         this.geocodeLocation = done
-                //         // console.log(this.geocodeLocation)
-                //         this.$store.dispatch('geocode', this.geocodeLocation)
+                // //     function done (done) {
+                // //         // console.log(done)
+                // //         this.geocodeLocation = done
+                // //         // console.log(this.geocodeLocation)
+                // //         this.$store.dispatch('geocode', this.geocodeLocation)
+                // //     }
+
+                //     //  Details to send to database
+                //      let details = {
+                //         name: this.name,
+                //         email: this.email,
+                //         phoneNumber: this.phoneNumber,
+                //         address: this.address,
+                //         dateOfBirth: this.dateOfBirth,
+                //         password: this.password,
+                //         check: this.check,
+                //         userLocation: userLocation
                 //     }
 
-                    //  Details to send to database
-                     let details = {
-                    name: this.name,
-                    email: this.email,
-                    phoneNumber: this.phoneNumber,
-                    address: this.address,
-                    dateOfBirth: this.dateOfBirth,
-                    password: this.password,
-                    check: this.check,
-                    userLocation: userLocation
-                    }
-
-                    //  Send Details here
-                    if (this.name && this.email && this.phoneNumber && this.address && this.dateOfBirth && this.password && this.check) {
-                        db.collection('signUp').add(details)
-                        .then(success => {
-                            console.log('Successfully Uploaded')
-                            db.collection('signUp').get()
-                                .then(snapshot => {
-                                    snapshot.forEach((doc) => {
+                //     //  Send Details here
+                //     if (this.name && this.email && this.phoneNumber && this.address && this.dateOfBirth && this.password && this.check) {
+                //         db.collection('signUp').add(details)
+                //         .then(success => {
+                //             console.log('Successfully Uploaded')
+                //             db.collection('signUp').get()
+                //                 .then(snapshot => {
+                //                     snapshot.forEach((doc) => {
                            
-                        //    Signup success alert
-                                    swal({
-                                            title: "Welcome To Neighbourhood!",
-                                            text: "Say Hi to your neighbours",
-                                            icon: "success",
-                                            button: "OK",
-                                        });
+                //         //    Signup success alert
+                //                     swal({
+                //                             title: "Welcome To Neighbourhood!",
+                //                             text: "Say Hi to your neighbours",
+                //                             icon: "success",
+                //                             button: "OK",
+                //                         });
                                       
                                     
-                                           // The target longitude and latitude
-                                        // var targetlong = doc.data().userLocation.long;                         
-                                        // var targetlat = doc.data().userLocation.lat;
-                                        // let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
-                                        // if (distance <= 1 && distance >= 0) {
-                                        //     this.neighbourArr.push(doc.data())
-                                        // }
-                                        if (details.name == doc.data().name && details.password == doc.data().password && doc.data().check){
-                                                this.userId = doc.id
-                                                details.userId = doc.id
-                                                this.$router.push({ name: 'Timeline', params: { userId: this.userId } })
-                                                this.blurLoad = false
-                                                this.loader = false
-                                            }   
-                                        // console.log(userLocation.long, userLocation.lat, targetlong, targetlat)
-                                    })
-                                    // bus.$emit('neighbours', this.neighbourArr)
-                                    // this.$store.dispatch('neighbours', this.neighbourArr)
-                                    // this.$store.state.arr = this.neighbourArr;
-                                })
-                        })
-                    }   else {
-                        swal("Error", "Fill all Input Fields", "error")
-                        this.blurLoad = false
-                        this.loader = false
-                    }
-                })
+                //                            // The target longitude and latitude
+                //                         // var targetlong = doc.data().userLocation.long;                         
+                //                         // var targetlat = doc.data().userLocation.lat;
+                //                         // let distance = disCheck(targetlat, targetlong, userLocation.lat, userLocation.long)
+                //                         // if (distance <= 1 && distance >= 0) {
+                //                         //     this.neighbourArr.push(doc.data())
+                //                         // }
+                //                         if (details.name == doc.data().name && details.password == doc.data().password && doc.data().check){
+                //                                 this.userId = doc.id
+                //                                 details.userId = doc.id
+                //                                 this.$router.push({ name: 'Timeline', params: { userId: this.userId } })
+                //                                 this.blurLoad = false
+                //                                 this.loader = false
+                //                             }   
+                //                         // console.log(userLocation.long, userLocation.lat, targetlong, targetlat)
+                //                     })
+                //                     // bus.$emit('neighbours', this.neighbourArr)
+                //                     // this.$store.dispatch('neighbours', this.neighbourArr)
+                //                     // this.$store.state.arr = this.neighbourArr;
+                //                 })
+                //         })
+                //     }   else {
+                //         swal("Error", "Fill all Input Fields", "error")
+                //         this.blurLoad = false
+                //         this.loader = false
+                //     }
+                // })
 
                 // //  Save their details with location to database
                 //     db.collection('signUp').add(details)
@@ -333,6 +334,46 @@ export default {
 
                         
             // this.$router.push({ name: 'LandingPage' })
+
+            auth().createUserWithEmailAndPassword(this.email, this.password)
+                .then((res) => {
+                    console.log(res)
+                    // alert('Successfully registered! Please login.');
+                    // this.$router.push({ name: 'Timeline', params: { userId: 12222 } })
+
+                    navigator.geolocation.getCurrentPosition( (position) => {
+                        var currentLocation = position.coords
+                        var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+
+                        //  Details to send to database
+                        let details = {
+                            name: this.name,
+                            email: this.email,
+                            phoneNumber: this.phoneNumber,
+                            address: this.address,
+                            dateOfBirth: this.dateOfBirth,
+                            password: this.password,
+                            check: this.check,
+                            userLocation: userLocation,
+                            uid: res.user.uid
+                        }
+                        console.log(details)
+
+                        db.collection('signUp').add(details)
+                        .then(success => {
+                            console.log(success)
+                            localStorage.setItem('token', res.user.xa)
+                            this.$router.push({ name: 'Timeline', params: { userId: success.id } })
+                            this.blurLoad = false
+                            this.loader = false
+                        })
+                    })
+                })
+                .catch(error => {
+                    swal("An error occurred", error.message, 'error')
+                    this.blurLoad = false
+                    this.loader = false
+                });
         }
     },
     created () {

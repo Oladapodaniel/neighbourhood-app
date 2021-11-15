@@ -6,7 +6,8 @@
 </template>
 
 <script> 
-import db from './firebase/init'
+// import db from './firebase/init'
+import  { auth } from "firebase/app";
 
 // import SearchNeighbour from './components/SearchNeighbour'
 export default {
@@ -20,7 +21,19 @@ export default {
     }
   },
   created () {
-     
+    console.log(auth())
+      // const auth = auth;
+      const user = auth().currentUser
+console.log(auth().currentUser)
+// kjjjj
+      if (user) {
+        this.$store.dispatch('setCurrentUser', user)
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/firebase.User
+        // ...
+      } else {
+        console.log('No user is signed in.')
+      }
           
   }
  

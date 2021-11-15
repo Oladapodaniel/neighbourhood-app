@@ -6,7 +6,8 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
     state: {
-        neighbours: []
+        neighbours: [],
+        currentUser: {}
         // neighbours: [
         //     { name: 'Oladapo Daniel', hobby: 'Worshiping and Coding'},
         //     { name: 'Akin', hobby: 'Worshiping and Druming'},
@@ -18,39 +19,28 @@ export const store = new Vuex.Store({
     getters: {
         neighbours: (state) => {
             return state.neighbours
-        //     let changeHobby = state.neighbours.map(neigh => {
-        //         return {
-        //             name: neigh.name,
-        //             hobby: `${neigh.hobby} with dancing`
-        //         }
-        //     })
-        //     return changeHobby
         },
+        currentUser: (state) => {
+            return state.currentUser
+        }
     },
     mutations: {
         mutateNeighbours: (state, payload)=> {
-            // setTimeout((state) => {
-                // state.neighbours.forEach(neigh => {
-                //     neigh.name = payload;
-            // })
-
-            // }, 3000)
             state.neighbours = payload
-            // console.log(payload)
         },
-
-        addNeighbors: (state, payload) => state.neighbours.push(payload)
+        addNeighbors: (state, payload) => {
+            return state.neighbours.push(payload)
+        },
+        setCurrentUser: (state, payload) => {
+            return state.currentUser = payload
+        }
     },
     actions: {
         neighbours: async(context, payload) => {
-            // setTimeout(()=> {
                 await context.commit('mutateNeighbours', payload)
-               
-            // }, 2000)
         },
-        
-        // addNeighbours: async(context, payload) => {
-        //         await context.commit('addNeighbors', payload)
-        // }
+        setCurrentUser: async(context, payload) => {
+            await context.commit('setCurrentUser', payload)
+        }
     }
 })

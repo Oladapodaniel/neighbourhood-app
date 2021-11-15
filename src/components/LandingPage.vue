@@ -40,7 +40,7 @@
              <div class="col-10 col-md-5 col-xl-4 offset-1 offset-md-0 offset-xl-1">
                 <div class="card1 card adjust">
                     <div class="card-body">
-                        <form>
+                        <form @submit.prevent="login">
                              <div class="login-title">LOG IN</div>
                             <div class="form-group">
                             <input type="email" class="form-control" v-model="email" id="exampleInputEmail1" ariadescribedby="emailHelp" placeholder="Email">
@@ -53,7 +53,7 @@
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                 <label class="form-check-label" for="exampleCheck1">Remember me</label>
                             </div> -->
-                            <button type="submit" @click.prevent="login" class="btn btn-info mt-2">Log In</button>
+                            <button class="btn btn-info mt-2">Log In</button>
                             <div class="mt-2 text-small text-danger" v-if="feedback">{{ feedback }}</div>
                             <!-- <div class="text-small text-center mt-2"> forgot password?</div> -->
                             <div class="text-small text-center mt-3">Dont have an account? 
@@ -175,9 +175,8 @@
 <script>
 
 
-import { bus } from '../main'
 import db from '../firebase/init'
-import disCheck from '../distanceCheck/distanceCheck'
+import { auth } from 'firebase/app'
 export default {
   name: 'LandingPage',
   data () {
@@ -193,58 +192,91 @@ export default {
   },
   methods: {
       login () {
-        for (let i = 0; i < this.getDetails.length; i++) {
+        // for (let i = 0; i < this.getDetails.length; i++) {
             
-        // Get their location
-                // navigator.geolocation.getCurrentPosition( (position, error) => {
-                // var currentLocation = position.coords
-                // var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+        // // Get their location
+        //         // navigator.geolocation.getCurrentPosition( (position, error) => {
+        //         // var currentLocation = position.coords
+        //         // var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
                 
-                // let distance = disCheck(this.getDetails[i].userLocation.lat, this.getDetails[i].userLocation.long, userLocation.lat, userLocation.long)
+        //         // let distance = disCheck(this.getDetails[i].userLocation.lat, this.getDetails[i].userLocation.long, userLocation.lat, userLocation.long)
                 
-                // if (distance <= 1 && distance >= 0) {
-                //     this.neighbourArr.push(this.getDetails[i])
-                // }
-                if (this.email === this.getDetails[i].email && this.password === this.getDetails[i].password ) {
-                    this.IndividualDetail = this.getDetails[i]
+        //         // if (distance <= 1 && distance >= 0) {
+        //         //     this.neighbourArr.push(this.getDetails[i])
+        //         // }
+        //         if (this.email === this.getDetails[i].email && this.password === this.getDetails[i].password ) {
+        //             this.IndividualDetail = this.getDetails[i]
 
-                    // Get users location to update it in firebase
-                    navigator.geolocation.getCurrentPosition( (position, error) => {
-                    var currentLocation = position.coords
-                    var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+        //             // Get users location to update it in firebase
+        //             navigator.geolocation.getCurrentPosition( (position, error) => {
+        //             var currentLocation = position.coords
+        //             var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
 
-                        // Now Update it
-                        db.collection('signUp').doc(this.IndividualDetail.id).update({
-                            userLocation: {
-                                lat: userLocation.lat,
-                                long: userLocation.long
-                            }
-                        })
-                    })
+        //                 // Now Update it
+        //                 db.collection('signUp').doc(this.IndividualDetail.id).update({
+        //                     userLocation: {
+        //                         lat: userLocation.lat,
+        //                         long: userLocation.long
+        //                     }
+        //                 })
+        //             })
                     
-                    this.$router.push({ name: 'Timeline', params: { userId: this.IndividualDetail.id } })
-                    // console.log(this.IndividualDetail.id)
-                } else if (!this.email || !this.password) {
-                    this.feedback = 'Please Fill In Your Details'
-                    setTimeout(() => {
-                        this.feedback = null
-                    }, 3000);
-                }   else {
-                    this.feedback = 'Please Enter Correct Details'
-                    setTimeout(() => {
-                        this.feedback = null
-                    }, 3000);
-            }
-
-        //     if (error) {
-        //     swal('Geolocation Not Supported', 'Browser does not support Geolation', 'error')
+        //             this.$router.push({ name: 'Timeline', params: { userId: this.IndividualDetail.id } })
+        //             // console.log(this.IndividualDetail.id)
+        //         } else if (!this.email || !this.password) {
+        //             this.feedback = 'Please Fill In Your Details'
+        //             setTimeout(() => {
+        //                 this.feedback = null
+        //             }, 3000);
+        //         }   else {
+        //             this.feedback = 'Please Enter Correct Details'
+        //             setTimeout(() => {
+        //                 this.feedback = null
+        //             }, 3000);
         //     }
 
-        // })
+        // //     if (error) {
+        // //     swal('Geolocation Not Supported', 'Browser does not support Geolation', 'error')
+        // //     }
+
+        // // })
             
-        }
-        this.$store.dispatch('neighbours', this.neighbourArr)
-       
+        // }
+        // this.$store.dispatch('neighbours', this.neighbourArr)
+    
+         auth().signInWithEmailAndPassword(this.email, this.password)
+            .then((res) => {
+                console.log('done')
+                // alert('Successfully logged in');
+                
+                console.log(res)
+                localStorage.setItem("token", res.user.xa)
+                this.getDetails.forEach(i => {
+                    if (i.email === this.email) {
+                        console.log(i)
+                        this.IndividualDetail = i
+
+                        // Update the user current location 
+
+                        navigator.geolocation.getCurrentPosition( (position, error) => {
+                        var currentLocation = position.coords
+                        var userLocation = { lat: currentLocation.latitude, long: currentLocation.longitude }
+
+                            // Now Update it
+                            db.collection('signUp').doc(this.IndividualDetail.id).update({
+                                userLocation: {
+                                    lat: userLocation.lat,
+                                    long: userLocation.long
+                                }
+                            })
+                        })
+                        this.$router.push({ name: 'Timeline' });
+                    }
+                })
+            })
+            .catch(error => {;
+                swal("An error occurred", error.message, 'error')
+            });
 
       
       }
